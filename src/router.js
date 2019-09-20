@@ -7,7 +7,7 @@ import NotFound from './components/NotFound.vue'
 
 Vue.use(VueRouter)
 
-const routers = [
+const routes = [
     { path: '/', name: 'home', component: GeoBlog,
       meta: { private: true } },
     { path: '/login', name: 'login', component: Login },
@@ -15,7 +15,7 @@ const routers = [
 ]
 
 const router = new VueRouter({
-    routers,
+    routes,
     mode: 'history',
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {

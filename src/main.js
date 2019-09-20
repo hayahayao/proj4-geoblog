@@ -1,9 +1,11 @@
 import 'babel-polyfill'
 import Vue from 'vue'
-import VueFetch, { $fetch } from './plugins/fetch'
+import VueFetch from './plugins/fetch'
+// import VueFetch, { $fetch } from './plugins/fetch'
 import App from './components/App.vue'
 import router from './router'
 import * as filters from './filters'
+import store from './store'
 
 for (const key in filters) {
     Vue.filter(key, filters[key])
@@ -18,6 +20,7 @@ function main() {
         ...App,
         el: '#app',
         router,
+        store,
     })
 }
 
