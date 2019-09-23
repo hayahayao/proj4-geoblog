@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import { masGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     computed: mapGetters([
-        'user',
+        'user', // 接受google返回的profile属性，里面包含用户的姓名和头像
         'userPicture',
     ]),
     methods: mapActions({
