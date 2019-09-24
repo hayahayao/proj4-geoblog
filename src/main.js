@@ -1,9 +1,8 @@
 import 'babel-polyfill'
 import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
-import * as VueGoogleMaps from 'vue2-google-maps'
+import VueGoogleMaps from 'vue-googlemaps'
 import VueFetch from './plugins/fetch'
-// import VueFetch, { $fetch } from './plugins/fetch'
 import App from './components/App.vue'
 import router from './router'
 import * as filters from './filters'
@@ -19,10 +18,9 @@ Vue.use(VueFetch, {
 
 Vue.use(VueGoogleMaps, {
     load: {
-        key: 'AIzaSyCk7ZZxrrZmZIwOyxCvy1wt4om9O_hQ7To',
-        libraries: 'places',
+        apiKey: 'AIzaSyCk7ZZxrrZmZIwOyxCvy1wt4om9O_hQ7To',
+        libraries: ['places'],
     },
-    installComponents: true,
 })
 
 sync(store, router)

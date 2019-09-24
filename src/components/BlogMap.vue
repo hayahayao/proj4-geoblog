@@ -1,17 +1,44 @@
 <template>
     <div class="blog-map">
-        <GmapMap
+        <googlemaps-map
+            ref="map"
             :center="center"
             :zoom="zoom"
             :options="mapOptions"
             @update:center="setCenter"
             @update:zoom="setZoom"
-            style="width: 100%; height: 100%;"
+            @click="onMapClick"
+            @idle="onIdle"
         >
-            <GmapMarker
+            <googlemaps-user-position
                 @update:position="setUserPosition"
             />
-        </GmapMap>
+            <googlemaps-marker
+                v-if="draft"
+                :clickable="false"
+                :label="{
+                    color: 'white',
+                    fontFamily: 'Material Icons',
+                    text: 'add_circle',
+                }"
+                :opacity=".75"
+                :position="draft.position"
+                :z-index="6"
+            />
+            <googlemaps-marker
+                v-for="post of posts"
+                :key="post._id"
+                :label="{
+                    color: post === currentPost ? 'white' : 'black',
+                    fontFamily: 'Material Icons',
+                    fontSize: '20px',
+                    text: 'face',
+                }"
+                :position="post.position"
+                :z-index="5"
+                @click="selectPost(post._id)"
+            />
+        </googlemaps-map>
     </div>
 </template>
 
@@ -19,16 +46,24 @@
 import { createNamespacedHelpers } from 'vuex'
 
 const {
-    mapGetters,
-    mapActions,
+    mapGetters: mapsGetters,
+    mapActions: mapsActions,
 } = createNamespacedHelpers('maps')
+const {
+    mapGetters: postsGetters,
+    mapActions: postsActions,
+} = createNamespacedHelpers('posts')
 
 export default {
     computed: {
-        ...mapGetters([
+        ...mapsGetters([
             'center',
             'zoom',
-            'userPosition',
+        ]),
+        ...postsGetters([
+            'draft',
+            'posts',
+            'currentPost',
         ]),
         mapOptions() {
             return {
@@ -36,10 +71,26 @@ export default {
             }
         },
     },
-    methods: mapActions([
-        'setCenter',
-        'setZoom',
-        'setUserPosition'
-    ]),
+    methods: {
+        ...mapsActions([
+            'setCenter',
+            'setZoom',
+            'setUserPosition',
+            'setBounds',
+        ]),
+        ...postsActions([
+            'setDraftLocation',
+            'selectPost',
+        ]),
+        onMapClick(event) {
+            this.setDraftLocation({
+                position: event.latLng,
+                placeId: event.placeId,
+            })
+        },
+        onIdle() {
+            this.setBounds(this.$refs.map.getBounds())
+        },
+    }
 }
 </script>

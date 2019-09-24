@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import { $fetch } from '../plugins/fetch'
 import router from '../router'
 import maps from './maps'
+import posts from './posts'
 
 Vue.use(Vuex)
 
@@ -37,14 +38,15 @@ const store = new Vuex.Store({
         async init({ dispatch }) {
             await dispatch('login')
         },
-        async login({ commit }) {
+        async login({ commit, dispatch }) {
             try {
                 const user = await $fetch('user')
                 commit('user', user)
-
-                // 重定向到对应的路由，或返回首页
                 if (user) {
+                    // 重定向到对应的路由，或返回首页
                     router.replace(router.currentRoute.params.wantedRoute || { name: 'home' })
+                    // posts中
+                    dispatch('logged-in')
                 }
             } catch (e) {
                 // eslint-disable-next-line no-console
@@ -66,6 +68,7 @@ const store = new Vuex.Store({
     },
     modules: {
         maps,
+        posts,
     },
 })
 

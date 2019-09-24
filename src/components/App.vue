@@ -6,4 +6,5 @@
 
 <style lang="stylus">
 @import '../styles/main'
+@import '~vue-googlemaps/dist/vue-googlemaps.css'
 </style>
