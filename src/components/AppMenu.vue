@@ -31,7 +31,7 @@ export default {
         'userPicture',
     ]),
     methods: mapActions({
-        centerOnUser: 'login',
+        centerOnUser: 'maps/centerOnUser',
         logout: 'logout',
     }),
 }
